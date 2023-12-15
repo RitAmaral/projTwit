@@ -90,11 +90,23 @@
                                         <li>
                                             <div class="card border-dark mb-3" style="max-width: 34rem; background-color: rgba(255, 255, 255, 0.7);">
                                                 <div class="card-header bg-transparent border-dark"><b>Date: </b>{{ $comentario->data_hora }}
-                                                    <form action ="{{ route('comentarios.delete', $comentario->id_comentarios)}}" method="post">
+                                                    <form id="deleteForm-{{ $comentario->id_comentarios }}" action="{{ route('comentarios.delete', $comentario->id_comentarios)}}" method="post">
                                                         @method('delete')
                                                         @csrf
-                                                        <input type="submit" class="btn btn-danger" style="color:red" value="⛌">
-                                                    </form> 
+                                                        <button type="button" class="btn btn-danger" style="color:red" onclick="confirmDelete({{ $comentario->id_comentarios }})">⛌</button>
+                                                    </form>
+
+                                                    <script>
+                                                        function confirmDelete(commentId) {
+                                                            var confirmation = window.confirm("Are you sure you want to delete this comment?");
+
+                                                            if (confirmation) {
+                                                                document.getElementById('deleteForm-' + commentId).submit();
+                                                            } else {
+                                                                window.location.href = "{{ route('welcome') }}";
+                                                            }
+                                                        }
+                                                    </script> 
                                                 </div>
                                                     <div class="card-body text-success">
                                                         <p class="card-text" style="color:#44aabb;">{{ $comentario->comentario }}</p>
